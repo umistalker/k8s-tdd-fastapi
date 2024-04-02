@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./
+    image: web_app_local
+    container_name: web_app_local
+    volumes:
+      - .:/app:z
+    ports:
+      - 8000:8000
+    entrypoint:
+      - ./entrypoint.sh
+      - web
+    env_file:
+      - .env
+    depends_on:
+      - web-db
+
+  web-db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile_db
+    image: web_db_local
+    container_name: web_db_local
+    env_file:
+      - .env
